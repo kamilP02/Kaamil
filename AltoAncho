@@ -1,0 +1,74 @@
+using System;
+
+abstract class Shape
+{
+    public double Width { get; set; }
+    public double Height { get; set; }
+
+    public Shape(double width, double height)
+    {
+        Width = width;
+        Height = height;
+    }
+
+    public abstract double CalculateSurface();
+}
+
+class Rectangle : Shape
+{
+    public Rectangle(double width, double height) : base(width, height) { }
+
+    public override double CalculateSurface()
+    {
+        return Width * Height; // Área del rectángulo
+    }
+}
+
+class Triangle : Shape
+{
+    public Triangle(double width, double height) : base(width, height) { }
+
+    public override double CalculateSurface()
+    {
+        return (Width * Height) / 2; // Área del triángulo
+    }
+}
+
+class Circle : Shape
+{
+    public Circle(double radius) : base(radius, radius) { }
+
+    public override double CalculateSurface()
+    {
+        return Math.PI * Math.Pow(Width, 2); // Área del círculo (pi * radio^2)
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        // Crear una matriz de Shapes (formas)
+        Shape[] shapes = new Shape[]
+        {
+            new Rectangle(4, 5),
+            new Triangle(6, 8),
+            new Circle(3)
+        };
+
+        // Crear una matriz para almacenar las áreas
+        double[] areas = new double[shapes.Length];
+
+        // Calcular el área de cada forma y almacenarla en la matriz
+        for (int i = 0; i < shapes.Length; i++)
+        {
+            areas[i] = shapes[i].CalculateSurface();
+        }
+
+        // Imprimir las áreas
+        for (int i = 0; i < areas.Length; i++)
+        {
+            Console.WriteLine($"Área de la forma {i + 1}: {areas[i]:F2}");
+        }
+    }
+}
