@@ -51,8 +51,8 @@ class Program
        
         Shape[] shapes = new Shape[]
         {
-            new Rectangle(4, 5),
-            new Triangle(6, 8),
+            new Rectangle(5, 6),
+            new Triangle(8, 10),
             new Circle(3)
         };
 
