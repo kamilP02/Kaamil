@@ -1,0 +1,140 @@
+using System;
+using System.Collections.Generic;
+
+// Clase base abstracta: Persona
+abstract class Persona
+{
+    public string Nombre { get; set; }
+
+    public Persona(string nombre)
+    {
+        Nombre = nombre;
+    }
+
+    public abstract string ObtenerInfo();
+}
+
+// Clase Estudiante que hereda de Persona
+class Estudiante : Persona
+{
+    public int NumeroUnico { get; set; }
+
+    public Estudiante(string nombre, int numeroUnico) : base(nombre)
+    {
+        NumeroUnico = numeroUnico;
+    }
+
+    public override string ObtenerInfo()
+    {
+        return $"Estudiante: {Nombre}, ID: {NumeroUnico}";
+    }
+}
+
+// Clase Profesor que hereda de Persona
+class Profesor : Persona
+{
+    public List<Curso> Cursos { get; private set; } = new List<Curso>();
+
+    public Profesor(string nombre) : base(nombre) { }
+
+    public void AgregarCurso(Curso curso)
+    {
+        Cursos.Add(curso);
+    }
+
+    public override string ObtenerInfo()
+    {
+        return $"Profesor: {Nombre}, Cursos: {Cursos.Count}";
+    }
+}
+
+// Clase Curso
+class Curso
+{
+    public string Nombre { get; set; }
+    public int RecuentoClases { get; set; }
+    public int RecuentoEjercicios { get; set; }
+
+    public Curso(string nombre, int recuentoClases, int recuentoEjercicios)
+    {
+        Nombre = nombre;
+        RecuentoClases = recuentoClases;
+        RecuentoEjercicios = recuentoEjercicios;
+    }
+}
+
+// Clase Clase
+class Clase
+{
+    public string Identificador { get; set; }
+    public List<Estudiante> Estudiantes { get; private set; } = new List<Estudiante>();
+    public List<Profesor> Profesores { get; private set; } = new List<Profesor>();
+
+    public Clase(string identificador)
+    {
+        Identificador = identificador;
+    }
+
+    public void AgregarEstudiante(Estudiante estudiante)
+    {
+        Estudiantes.Add(estudiante);
+    }
+
+    public void AgregarProfesor(Profesor profesor)
+    {
+        Profesores.Add(profesor);
+    }
+}
+
+// Clase Escuela
+class Escuela
+{
+    public List<Clase> Clases { get; private set; } = new List<Clase>();
+
+    public void AgregarClase(Clase clase)
+    {
+        Clases.Add(clase);
+    }
+}
+
+// Programa principal
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Crear estudiantes
+        Estudiante estudiante1 = new Estudiante("Kamil", 1);
+        Estudiante estudiante2 = new Estudiante("Dayanara", 2);
+
+        // Crear profesor
+        Profesor profesor1 = new Profesor("Francis Ramirez");
+        profesor1.AgregarCurso(new Curso("Programacion 2", 50, 50));
+        profesor1.AgregarCurso(new Curso("Programacion 3", 50, 30));
+
+        // Crear clase
+        Clase clase1 = new Clase("A1");
+        clase1.AgregarEstudiante(estudiante1);
+        clase1.AgregarEstudiante(estudiante2);
+        clase1.AgregarProfesor(profesor1);
+
+        // Crear escuela
+        Escuela escuela = new Escuela();
+        escuela.AgregarClase(clase1);
+
+        // Mostrar información
+        foreach (var clase in escuela.Clases)
+        {
+            Console.WriteLine($"Clase: {clase.Identificador}");
+            Console.WriteLine("Estudiantes:");
+            foreach (var estudiante in clase.Estudiantes)
+            {
+                Console.WriteLine(estudiante.ObtenerInfo());
+            }
+            Console.WriteLine("Profesores:");
+            foreach (var profesor in clase.Profesores)
+            {
+                Console.WriteLine(profesor.ObtenerInfo());
+            }
+        }
+    }
+}
