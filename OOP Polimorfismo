@@ -1,0 +1,100 @@
+using System;
+using System.Collections.Generic;
+
+namespace CalculoSalarios
+{
+    // Clase base de empleados
+    public abstract class Empleado
+    {
+        public string NombreEmpleado { get; set; }
+
+        public Empleado(string nombreEmpleado)
+        {
+            NombreEmpleado = nombreEmpleado;
+        }
+
+        public abstract decimal CalcularSalario();
+    }
+
+    // Clase para docentes por hora
+    public class DocentePorHora : Empleado
+    {
+        public int TotalHorasTrabajadas { get; set; }
+        private const decimal TarifaHora = 800;
+
+        public DocentePorHora(string nombreEmpleado, int totalHorasTrabajadas) 
+            : base(nombreEmpleado)
+        {
+            TotalHorasTrabajadas = totalHorasTrabajadas;
+        }
+
+        public override decimal CalcularSalario()
+        {
+            return TotalHorasTrabajadas * TarifaHora;
+        }
+    }
+
+    // Clase docentes contrato fijo
+    public class DocenteContratoFijo : Empleado
+    {
+        public decimal SalarioBase { get; set; }
+        public bool MetaAlcanzada { get; set; }
+
+        public DocenteContratoFijo(string nombreEmpleado, decimal salarioBase, bool metaAlcanzada) 
+            : base(nombreEmpleado)
+        {
+            SalarioBase = salarioBase;
+            MetaAlcanzada = metaAlcanzada;
+        }
+
+        public override decimal CalcularSalario()
+        {
+            return MetaAlcanzada ? SalarioBase : SalarioBase / 2;
+        }
+    }
+
+    // Clase empleados administrativos
+    public class EmpleadoAdministrativo : Empleado
+    {
+        public decimal SalarioBase { get; set; }
+        public bool MetaAlcanzada { get; set; }
+
+        public EmpleadoAdministrativo(string nombreEmpleado, decimal salarioBase, bool metaAlcanzada) 
+            : base(nombreEmpleado)
+        {
+            SalarioBase = salarioBase;
+            MetaAlcanzada = metaAlcanzada;
+        }
+
+        public override decimal CalcularSalario()
+        {
+            return MetaAlcanzada ? SalarioBase : SalarioBase / 2;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            
+            var profesorPorHora = new DocentePorHora("Kamil Peguero", 40);
+            var profesorContratoFijo = new DocenteContratoFijo("Maria Trinidad Sanchez", 20000, true);
+            var administrador = new EmpleadoAdministrativo("Karla Yamilett", 15000, false);
+
+            // Lista de empleados
+            var listaEmpleados = new List<Empleado>
+            {
+                profesorPorHora,
+                profesorContratoFijo,
+                administrador
+            };
+
+          
+            Console.WriteLine("Cálculo de salarios mensuales:");
+            foreach (var empleado in listaEmpleados)
+            {
+                Console.WriteLine($"{empleado.NombreEmpleado}: {empleado.CalcularSalario()} unidades monetarias");
+            }
+        }
+    }
+}
