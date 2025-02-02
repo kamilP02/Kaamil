@@ -1,0 +1,41 @@
+using System;
+using System.Linq;
+
+namespace RestaurantBillApp
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            
+            Console.WriteLine("Ingrese los precios de los platos (separados por comas):");
+            string input = Console.ReadLine();
+            decimal[] prices = input.Split(',').Select(decimal.Parse).ToArray();
+
+            
+            Console.WriteLine("¿Desea agregar una propina personalizada? (s/n):");
+            string tipResponse = Console.ReadLine();
+
+            decimal tipPercentage = tipResponse.ToLower() == "s" ? GetTipPercentage() : 10;
+
+         
+            decimal total = CalculateTotal(prices, tipPercentage);
+
+           
+            Console.WriteLine($"Total a pagar (con propina del {tipPercentage}%): {total}");
+        }
+
+        static decimal GetTipPercentage()
+        {
+            Console.WriteLine("Ingrese el porcentaje de propina:");
+            return decimal.Parse(Console.ReadLine());
+        }
+
+        static decimal CalculateTotal(decimal[] prices, decimal tipPercentage)
+        {
+            decimal subtotal = prices.Sum();
+            decimal totalWithTip = subtotal + (subtotal * tipPercentage / 100);
+            return totalWithTip;
+        }
+    }
+}
