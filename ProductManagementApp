@@ -1,0 +1,87 @@
+using System;
+using System.Collections.Generic;
+
+namespace ProductManagementApp
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ServicioProducto servicioProducto = new ServicioProducto();
+            bool salir = false;
+
+            while (!salir)
+            {
+                Console.WriteLine("\nSeleccione una opción:");
+                Console.WriteLine("1. Agregar producto");
+                Console.WriteLine("2. Eliminar producto");
+                Console.WriteLine("3. Salir");
+
+                string opcion = Console.ReadLine();
+
+                switch (opcion)
+                {
+                    case "1":
+                        Console.WriteLine("Ingrese el nombre del producto:");
+                        string nombre = Console.ReadLine();
+
+                        Console.WriteLine("Ingrese el precio del producto:");
+                        if (decimal.TryParse(Console.ReadLine(), out decimal precio))
+                        {
+                            servicioProducto.AgregarProducto(nombre, precio);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Precio inválido.");
+                        }
+                        break;
+
+                    case "2":
+                        Console.WriteLine("Ingrese el ID del producto a eliminar:");
+                        if (int.TryParse(Console.ReadLine(), out int idProducto))
+                        {
+                            servicioProducto.EliminarProducto(idProducto);
+                        }
+                        else
+                        {
+                            Console.WriteLine("ID inválido.");
+                        }
+                        break;
+
+                    case "3":
+                        salir = true;
+                        break;
+
+                    default:
+                        Console.WriteLine("Opción inválida.");
+                        break;
+                }
+            }
+        }
+    }
+
+    public class ServicioProducto
+    {
+        private readonly Dictionary<int, (string Nombre, decimal Precio)> productos = new();
+        private int siguienteIdProducto = 1;
+
+        public void AgregarProducto(string nombre, decimal precio)
+        {
+            productos[siguienteIdProducto] = (nombre, precio);
+            Console.WriteLine($"Producto '{nombre}' agregado con ID {siguienteIdProducto} y precio {precio}.");
+            siguienteIdProducto++;
+        }
+
+        public void EliminarProducto(int idProducto)
+        {
+            if (productos.Remove(idProducto))
+            {
+                Console.WriteLine($"Producto con ID {idProducto} eliminado.");
+            }
+            else
+            {
+                Console.WriteLine($"No se encontró un producto con ID {idProducto}.");
+            }
+        }
+    }
+}
