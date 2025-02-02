@@ -1,0 +1,85 @@
+
+namespace SolidPrinciples.SOLID
+{
+    
+    public class EmailService
+    {
+        public void SendEmail(string email, string message)
+        {
+            Console.WriteLine($"Sending Email to {email}: {message}");
+        }
+    }
+
+    
+    public class SmsService
+    {
+        public void SendSms(string phoneNumber, string message)
+        {
+            Console.WriteLine($"Sending SMS to {phoneNumber}: {message}");
+        }
+    }
+
+    
+    public class LogService
+    {
+        public void LogNotification(string message)
+        {
+            Console.WriteLine($"Logging notification: {message}");
+        }
+    }
+
+  
+    public class NotificationService
+    {
+        private readonly EmailService _emailService;
+        private readonly SmsService _smsService;
+        private readonly LogService _logService;
+
+        public NotificationService()
+        {
+            _emailService = new EmailService();
+            _smsService = new SmsService();
+            _logService = new LogService();
+        }
+
+        public void SendNotification(int option, string recipient, string message)
+        {
+            switch (option)
+            {
+                case 1:
+                    _emailService.SendEmail(recipient, message);
+                    break;
+                case 2:
+                    _smsService.SendSms(recipient, message);
+                    break;
+                default:
+                    Console.WriteLine("Invalid notification type selected.");
+                    return;
+            }
+
+            _logService.LogNotification(message);
+        }
+    }
+
+  
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var notificationService = new NotificationService();
+
+            Console.WriteLine("Seleccione el tipo de notificación:");
+            Console.WriteLine("1. Email");
+            Console.WriteLine("2. SMS");
+            int option = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Ingrese el destinatario (email o número de teléfono):");
+            string recipient = Console.ReadLine();
+
+            Console.WriteLine("Ingrese el mensaje:");
+            string message = Console.ReadLine();
+
+            notificationService.SendNotification(option, recipient, message);
+        }
+    }
+}
