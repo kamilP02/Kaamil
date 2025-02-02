@@ -1,0 +1,51 @@
+using System;
+
+namespace PayrollApp
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Seleccione el tipo de empleado (1: Tiempo completo, 2: Medio tiempo):");
+            int employeeType = int.Parse(Console.ReadLine());
+
+            decimal salary = 0;
+
+            if (employeeType == 1)
+            {
+                Console.WriteLine("Ingrese el salario base:");
+                salary = decimal.Parse(Console.ReadLine());
+            }
+            else if (employeeType == 2)
+            {
+                Console.WriteLine("Ingrese el salario por hora:");
+                decimal hourlyRate = decimal.Parse(Console.ReadLine());
+                
+                Console.WriteLine("Ingrese las horas trabajadas:");
+                int hoursWorked = int.Parse(Console.ReadLine());
+                
+                salary = hourlyRate * hoursWorked;
+            }
+            else
+            {
+                Console.WriteLine("Opción inválida.");
+                return;
+            }
+
+            decimal netSalary = CalculateNetSalary(salary);
+
+            Console.WriteLine($"Salario neto después de impuestos y bono: {netSalary}");
+        }
+
+        static decimal CalculateNetSalary(decimal salary)
+        {
+            const decimal taxRate = 0.18m;
+            const decimal bonusRate = 0.05m;
+
+            decimal tax = salary * taxRate;
+            decimal bonus = salary * bonusRate;
+
+            return salary - tax + bonus;
+        }
+    }
+}
